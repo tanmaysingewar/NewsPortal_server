@@ -3,15 +3,16 @@ const date = require('date-and-time');
 const now = new Date();
 
 exports.createNews = (req,res) => {
-    const {title,news,name} = req.body
+    const {title,news,name,catagory} = req.body
     const post = new Post({
         title : title,
         news : news,
-        date : date.format(now, 'ddd, MMM DD YYYY HH:mm:ss'),
-        name : name
+        date : date.format(now, 'ddd, MMM DD YYYY'),
+        name : name,
+        catagory : catagory
     })
 
-    post.save((err , user) =>{
+    post.save((err , user) => {
         if(err || !user){
             return res.status(400).json({
                 success : false,
@@ -94,7 +95,7 @@ exports.deletePost = (req,res) => {
 exports.getAllPost = (req,res) => {
     Post.find({})
     .sort([["_id" ,'descending']])
-    .select("title news date name")
+    .select("title news date name catagory")
     .exec((err,post) => {
         if(err || !post){
             return res.json({
@@ -108,3 +109,25 @@ exports.getAllPost = (req,res) => {
         })
     })
 }
+
+exports.getPostByCatagory = (req,res) => {
+    const catagory = req.query.catagory;
+
+    console.log(catagory);
+
+    Post.find({catagory : catagory})
+    .sort([["_id" ,'descending']])
+    .select("title news date name catagory")
+    .exec((err,post) => {
+        if(err || !post){
+            return res.json({
+                status : false,
+                err : err
+            })
+        }
+        return res.json({
+            status : true,
+            post : post
+        })
+    })
+};

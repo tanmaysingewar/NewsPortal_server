@@ -55,12 +55,14 @@ exports.loginUser = (req,res) => {
         .exec((err,user) => {
             if (err || !user) {
                 return res.status(400).json({
+                    success : false,
                     error: "USER email Does not exist"
                 })
             }
             console.log(user.authincate(password))
             if (!user.authincate(password)) {
                 return res.status(401).json({
+                    success : false,
                     error : 'Email and password dosent match'
                 })
             }
@@ -83,6 +85,38 @@ exports.getUser = (req,res) => {
     User.findById({_id : uid})
     .select("firstName lastName email phone address")
     .exec((err,user) =>{
+        if(err || !user){
+            return res.status(400).json({
+                success : false,
+                message : 'No User in DB'
+            })
+        }
+        return res.json({
+            user
+        })
+    })
+}
+
+exports.getAllUsers = (req,res) => {
+    User.find({})
+    .exec((err,users) => {
+        if(err || !users){
+            return res.status(400).json({
+                success : false,
+                message : 'No User in DB'
+            })
+        }
+        return res.json({
+            users
+        })
+    })
+}
+
+exports.deleteUser = (req,res) => {
+    const uid = req.query._id
+
+    User.findByIdAndDelete({_id : uid})
+    .exec((err,user) => {
         if(err || !user){
             return res.status(400).json({
                 success : false,
