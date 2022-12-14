@@ -20,7 +20,7 @@ exports.addAdvertisement = (req,res) => {
             if(err || !advertisement){
                 return res.json({
                     status : false,
-                    err : err
+                    err: err
                 })
             }
             return res.json({
@@ -46,4 +46,5 @@ exports.getAdvertisement = (req,res) => {
         })
     })
 }
+
 

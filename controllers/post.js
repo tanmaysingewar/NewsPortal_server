@@ -1,6 +1,9 @@
 const Post = require("../models/post");
 const date = require('date-and-time');
 const now = new Date();
+const socketIo = require('socket.io')
+
+
 
 exports.createNews = (req,res) => {
     const {title,news,name,catagory} = req.body
@@ -12,18 +15,21 @@ exports.createNews = (req,res) => {
         catagory : catagory
     })
 
-    post.save((err , user) => {
-        if(err || !user){
+    post.save((err , post) => {
+        if(err || !post){
             return res.status(400).json({
                 success : false,
                 message : 'Not able to save in DB',
                 err : err
             })
         }
+
+        // io.to('clock-room').emit('time', title);
         
         return res.json({
            success : true,
-           message : "Post is created successfully"
+           message : "Post is created successfully",
+           post
         })
     })
 }
@@ -113,7 +119,7 @@ exports.getAllPost = (req,res) => {
 exports.getPostByCatagory = (req,res) => {
     const catagory = req.query.catagory;
 
-    console.log(catagory);
+    // console.log(catagory);
 
     Post.find({catagory : catagory})
     .sort([["_id" ,'descending']])

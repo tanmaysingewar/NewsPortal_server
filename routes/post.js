@@ -20,5 +20,4 @@ router.post('/post/headnews',createHeadNews);
 
 router.get('/getPostByCategory',getPostByCatagory);
 
-
 module.exports = router;
