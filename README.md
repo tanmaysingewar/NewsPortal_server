@@ -1,1 +1,1 @@
-# NewsPortal_server
+# NewsBoat_server
