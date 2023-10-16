@@ -12,7 +12,7 @@ require('dotenv').config()
 const app = express();
 
 //Connecting to MONGODB (Locally)
-mongoose.connect( process.env.MONGO_CONN_LOCAL,{
+mongoose.connect( process.env.MONGO_CONN_SERVER,{
     useUnifiedTopology: true,
     useNewUrlParser: true
 }).then(()=>{
